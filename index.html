@@ -6,7 +6,7 @@
     <title>Pentru Valentina mea ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        /* Centrare absolută pe tot ecranul */
+        /* Centrare absolută a întregului conținut */
         body, html {
             height: 100%;
             margin: 0;
@@ -24,25 +24,25 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
+            max-width: 400px;
             padding: 20px;
         }
 
         h1 { 
             color: #d63384; 
-            font-size: 2.2rem; 
-            margin-bottom: 20px;
+            font-size: 2rem; 
+            margin: 20px 0;
             min-height: 60px;
         }
 
+        /* Imaginea de start (GIF de pe net) */
         #mainImg { 
             width: 250px; 
-            max-width: 80%;
             border-radius: 20px; 
-            margin-bottom: 20px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        /* Containerul video - ajustat pentru Shorts */
+        /* Containerul pentru video-ul de la final */
         #videoContainer {
             display: none;
             width: 315px;
@@ -50,37 +50,42 @@
             max-height: 80vh;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
-        .buttons { 
-            position: relative; 
-            height: 80px; 
-            width: 100%; 
-            display: flex; 
-            justify-content: center; 
+        .buttons-wrapper {
+            margin-top: 20px;
+            height: 120px; 
+            display: flex;
+            justify-content: center;
             align-items: center;
             gap: 20px;
+            width: 100%;
+            position: relative;
         }
         
         button { 
-            padding: 15px 35px; 
+            padding: 15px 30px; 
             font-size: 1.2rem; 
             font-weight: bold; 
             cursor: pointer; 
             border: none; 
             border-radius: 50px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: 0.2s;
         }
         
-        #yesBtn { background-color: #ff4d6d; color: white; z-index: 10; }
+        #yesBtn { 
+            background-color: #ff4d6d; 
+            color: white; 
+            z-index: 10;
+        }
         
         #noBtn { 
             background-color: #8a8a8a; 
             color: white; 
-            position: absolute; 
+            position: relative;
             z-index: 5;
+            transition: 0.1s ease; /* Mișcare rapidă */
         }
     </style>
 </head>
@@ -88,11 +93,12 @@
 
     <div class="main-container">
         <div id="startContent">
-            <img id="mainImg" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnJueXp6bm9pYmRreHh3bm9pYmRreHh3bm9pYmRreHh3bm9pYmRreHh3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCBmcm9tX2dpZnRvaXRhJmN0PWc/I1pG7p6vV517C64f0f/giphy.gif" alt="Cute bear">
+            <img id="mainImg" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5bXF6ZzRycGZ1ZWp6ZzRycGZ1ZWp6ZzRycGZ1ZWp6ZzRycGZ1JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCBmcm9tX2dpZnRvaXRhJmN0PWc/c76IJbxTcJCGA/giphy.gif" alt="Cute bear">
             <h1 id="question">Vrei să fii Valentina mea? 🌹</h1>
-            <div class="buttons">
+            
+            <div class="buttons-wrapper">
                 <button id="yesBtn" onclick="celebrate()">DA</button>
-                <button id="noBtn" onmouseover="moveButton()">NU</button>
+                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">NU</button>
             </div>
         </div>
 
@@ -107,26 +113,31 @@
     </div>
 
     <script>
+        // Funcția de mișcare a butonului de NU
         function moveButton() {
             const btn = document.getElementById('noBtn');
-            // Menținem butonul în limitele ferestrei vizibile
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 50);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 50);
+            btn.style.position = 'absolute';
             
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            // Limităm mișcarea la o zonă rezonabilă (200px)
+            const limit = 100; 
+            
+            const randomX = Math.floor(Math.random() * (limit * 2)) - limit;
+            const randomY = Math.floor(Math.random() * (limit * 2)) - limit;
+            
+            btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
         }
 
+        // Funcția de activare a surprizei
         function celebrate() {
             document.getElementById('startContent').style.display = 'none';
             const videoContainer = document.getElementById('videoContainer');
             videoContainer.style.display = 'block';
             
-            // Link-ul de embed corect pentru video-ul tău
+            // Video-ul tău cu pisica
             const ytVideo = document.getElementById('ytVideo');
             ytVideo.src = "https://www.youtube.com/embed/oOczy1LaXoc?autoplay=1&controls=0";
 
-            // Confetti
+            // Lansare confetti
             var end = Date.now() + (10 * 1000);
             (function frame() {
                 confetti({
